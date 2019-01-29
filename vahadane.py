@@ -15,7 +15,7 @@ def getV(img):
     V0 = np.log(255 / I0)
     
     img_LAB = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
-    mask = img_LAB[:, :, 0] / 255 < 0.9
+    mask = img_LAB[:, :, 0] / 255 < 0.95
     I = img[mask].reshape((-1, 3)).T
     I[I == 0] = 1
     V = np.log(255 / I)
@@ -41,7 +41,7 @@ def SNMF(img, flag=True):
     V0, V = getV(img)
     print('getV: ' + str(time.time() - start) + ' s')
     start = time.time()
-    W = getW(V0)
+    W = getW(V)
     print('getW: ' + str(time.time() - start) + ' s')
     start = time.time()
     H = getH(V0, W)
