@@ -13,18 +13,20 @@ def getV(img):
     I0[mask] = 1
     V0 = np.log(255 / I0)
     
-#     img_LAB = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
-#     mask = img_LAB[:, :, 0] / 255 < 0.9
-#     I = img[mask].reshape((-1, 3)).T
-#     mask = (I == 0)
-#     I[mask] = 1
-#     V = np.log(255 / I)
-    return V0
+    img_LAB = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
+    mask = img_LAB[:, :, 0] / 255 < 0.9
+    I = img[mask].reshape((-1, 3)).T
+    mask = (I == 0)
+    I[mask] = 1
+    V = np.log(255 / I)
+    return V0, V
 
 
 def getW(V):
     W = spams.trainDL(V, K=STAIN_NUM, lambda1=LAMBDA, mode=2, modeD=0, posAlpha=True, posD=True)
     W = W / np.linalg.norm(W, axis=0)[None, :]
+    if (W[0,0] < W[0,1]):
+        W = W[:, [1,0]]
     return W
 
 
@@ -34,9 +36,9 @@ def getH(V, W):
 
 
 def SNMF(img, flag=True):
-    V = getV(img)
+    V0, V = getV(img)
     W = getW(V)
-    H = getH(V, W)
+    H = getH(V0, W)
     return W,H
 
 
@@ -44,8 +46,6 @@ def SPCN(img, Ws, Hs, Wt, Ht):
     Hs_RM = np.percentile(Hs, 99, axis=1)
     Ht_RM = np.percentile(Ht, 99, axis=1)
     Hs_norm = Hs * Ht_RM[:, None] / Hs_RM[:, None]
-    print(Ws)
-    print(Wt)
     Vs_norm = np.dot(Wt, Hs)
     Is_norm = 255 * np.exp(-1 * Vs_norm)
     I = Is_norm.T.reshape(img.shape).astype(np.uint8)
