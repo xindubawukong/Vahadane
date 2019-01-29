@@ -1,6 +1,7 @@
 import spams
 import numpy as np
 import cv2
+import time
 
 
 STAIN_NUM = 2
@@ -16,8 +17,7 @@ def getV(img):
     img_LAB = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
     mask = img_LAB[:, :, 0] / 255 < 0.9
     I = img[mask].reshape((-1, 3)).T
-    mask = (I == 0)
-    I[mask] = 1
+    I[I == 0] = 1
     V = np.log(255 / I)
     return V0, V
 
@@ -31,14 +31,21 @@ def getW(V):
 
 
 def getH(V, W):
-    H = spams.lasso(V, W, mode=2, lambda1=LAMBDA, pos=True)
-    return H.toarray()
+    H = spams.lasso(V, W, mode=2, lambda1=LAMBDA, pos=True).toarray()
+#     H = np.linalg.pinv(W).dot(V); H[H<0] = 0
+    return H
 
 
 def SNMF(img, flag=True):
+    start = time.time()
     V0, V = getV(img)
-    W = getW(V)
+    print('getV: ' + str(time.time() - start) + ' s')
+    start = time.time()
+    W = getW(V0)
+    print('getW: ' + str(time.time() - start) + ' s')
+    start = time.time()
     H = getH(V0, W)
+    print('getH: ' + str(time.time() - start) + ' s')
     return W,H
 
 
