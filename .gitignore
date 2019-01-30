@@ -2,4 +2,5 @@
 /venv
 /.ipy*
 /__pycache__
-/output
+/output/*
+/data/*
