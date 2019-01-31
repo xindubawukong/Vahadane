@@ -42,7 +42,7 @@ class vahadane(object):
 
 
     def getW(self, V):
-        W = spams.trainDL(np.asfortranarray(V), K=self.STAIN_NUM, lambda1=self.LAMBDA1, iter=self.ITER, mode=2, modeD=0, posAlpha=True, posD=True)
+        W = spams.trainDL(np.asfortranarray(V), K=self.STAIN_NUM, lambda1=self.LAMBDA1, iter=self.ITER, mode=2, modeD=0, posAlpha=True, posD=True, verbose=False)
         W = W / np.linalg.norm(W, axis=0)[None, :]
         if (W[0,0] < W[0,1]):
             W = W[:, [1,0]]
@@ -61,6 +61,7 @@ class vahadane(object):
 
 
     def stain_separate(self, img):
+        print('asd')
         start = time.time()
         if (self.fast_mode == 0):
             V0, V = self.getV(img)
@@ -73,17 +74,18 @@ class vahadane(object):
             lenm = int(m / 30)
             grid_size_n = int(n / 10)
             lenn = int(n / 30)
-            W = np.zeros((81, 3, STAIN_NUM)).astype(np.float64)
+            W = np.zeros((81, 3, self.STAIN_NUM)).astype(np.float64)
             for i in range(0, 9):
                 for j in range(0, 9):
+                    print('i =',i,' j=',j)
                     px = (i + 1) * grid_size_m
                     py = (j + 1) * grid_size_n
                     patch = img[px - lenm : px + lenm, py - lenn: py + lenn, :]
-                    V0, V = getV(patch)
-                    W[i*9+j] = getW(V)
+                    V0, V = self.getV(patch)
+                    W[i*9+j] = self.getW(V)
             W = np.mean(W, axis=0)
-            V0, V = getV(img)
-            H = getH(V0, W)
+            V0, V = self.getV(img)
+            H = self.getH(V0, W)
         print('stain separation time:', time.time()-start, 's')
         return W, H
 
