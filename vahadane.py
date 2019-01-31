@@ -51,7 +51,7 @@ class vahadane(object):
 
     def getH(self, V, W):
         if (self.getH_mode == 0):
-            H = spams.lasso(np.asfortranarray(V), np.asfortranarray(W), mode=2, lambda1=self.LAMBDA2, pos=True).toarray()
+            H = spams.lasso(np.asfortranarray(V), np.asfortranarray(W), mode=2, lambda1=self.LAMBDA2, pos=True, verbose=False).toarray()
         elif (self.getH_mode == 1):
             H = np.linalg.pinv(W).dot(V);
             H[H<0] = 0
@@ -61,7 +61,6 @@ class vahadane(object):
 
 
     def stain_separate(self, img):
-        print('asd')
         start = time.time()
         if (self.fast_mode == 0):
             V0, V = self.getV(img)
@@ -77,7 +76,6 @@ class vahadane(object):
             W = np.zeros((81, 3, self.STAIN_NUM)).astype(np.float64)
             for i in range(0, 9):
                 for j in range(0, 9):
-                    print('i =',i,' j=',j)
                     px = (i + 1) * grid_size_m
                     py = (j + 1) * grid_size_n
                     patch = img[px - lenm : px + lenm, py - lenn: py + lenn, :]
