@@ -6,7 +6,7 @@ import time
 
 class vahadane(object):
     
-    def __init__(self, STAIN_NUM=2, THRESH=0.9, LAMBDA1=0.02, LAMBDA2=0.02, ITER=100, fast_mode=0, getH_mode=0):
+    def __init__(self, STAIN_NUM=2, THRESH=0.9, LAMBDA1=0.01, LAMBDA2=0.01, ITER=100, fast_mode=0, getH_mode=0):
         self.STAIN_NUM = STAIN_NUM
         self.THRESH = THRESH
         self.LAMBDA1 = LAMBDA1
@@ -69,13 +69,13 @@ class vahadane(object):
         elif (self.fast_mode == 1):
             m = img.shape[0]
             n = img.shape[1]
-            grid_size_m = int(m / 10)
-            lenm = int(m / 30)
-            grid_size_n = int(n / 10)
-            lenn = int(n / 30)
+            grid_size_m = int(m / 5)
+            lenm = int(m / 20)
+            grid_size_n = int(n / 5)
+            lenn = int(n / 20)
             W = np.zeros((81, 3, self.STAIN_NUM)).astype(np.float64)
-            for i in range(0, 9):
-                for j in range(0, 9):
+            for i in range(0, 4):
+                for j in range(0, 4):
                     px = (i + 1) * grid_size_m
                     py = (j + 1) * grid_size_n
                     patch = img[px - lenm : px + lenm, py - lenn: py + lenn, :]
