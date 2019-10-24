@@ -1,10 +1,9 @@
-#Structure-Preserving Color Normalization and Sparse
-Stain Separation for Histological Images (Vahadane normalization)
 
 
+### Structure-Preserving Color Normalization and Sparse Stain Separation for Histological Images 
+(Vahadane normalization)
 
-### Abhishek Vahadane*, Tingying Peng*, Amit Sethi, Shadi Albarqouni, Lichao Wang, Maximilian Baust,
-###Katja Steiger, Anna Melissa Schlitter, Irene Esposito, and Nassir Navab
+Abhishek Vahadane*, Tingying Peng*, Amit Sethi, Shadi Albarqouni, Lichao Wang, Maximilian Baust, Katja Steiger, Anna Melissa Schlitter, Irene Esposito, and Nassir Navab
 
 
 code: python3
