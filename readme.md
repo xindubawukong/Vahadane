@@ -1,6 +1,8 @@
 # Vahadane论文normalization
 
+Implementation of "Structure-Preserving Color Normalization and Sparse Stain Separation for Histological Images (Vahadane normalization)"
 
+实验报告：https://github.com/xindubawukong/Vahadane/blob/master/report.pdf
 
 ### 简要说明
 
